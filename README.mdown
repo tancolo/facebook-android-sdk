@@ -1,7 +1,8 @@
 Facebook-SDK-Dev for Android
 ============================
 
-作者: shrimpcolo, Email: shrimpcolo@gmail.com
+作者: shrimpcolo
+Email: shrimpcolo@gmail.com
 
 本项目fork自Facebook官方git库, 目的如下：
 * 成功编译出sample中的apk。
@@ -14,7 +15,7 @@ Facebook-SDK-Dev for Android
 * MyDev分支是个人学习分支，涉及的修改跟FB Sdk使用有关。
 * 近期增加的内容是个sample（名字Wosao，在sample文件夹中），分步骤讲解如何集成Sdk到自己的App中。
 
-开发集成环境git 
+开发集成环境
 ------------
 * Android Studio 1.4
 * gradle 2.6
@@ -31,7 +32,7 @@ sample编译生成apk
 * 多途径分享图片
 
 在运行sample过程中需要生成本地debugkey.store 对应的Key Hash, 放到facebook开发者网站个人开发配置中。
-详见 ![如何生成sample app key](http://blog.csdn.net/shrimpcolo/article/details/49150829#忘却的步骤)
+详见 http://blog.csdn.net/shrimpcolo/article/details/49150829#忘却的步骤
 
 Wosao 集成步骤
 --------------
