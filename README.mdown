@@ -36,4 +36,4 @@ sample编译生成apk
 
 Wosao 集成步骤
 --------------
-
+查看samples/Wosao/Readme.md说明!

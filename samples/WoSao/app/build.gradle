@@ -28,5 +28,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:22.2.1'
 
     //step_3 facebook sdk version
-    compile 'com.facebook.android:facebook-android-sdk:4.8.0'
+    compile 'com.facebook.android:facebook-android-sdk:4.6.0'
 }

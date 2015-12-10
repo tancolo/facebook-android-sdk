@@ -5,4 +5,12 @@
     <string name="action_settings">Settings</string>
     <!-- step_01 facebook app_id -->
     <string name="facebook_app_id">1640967989507233</string>
+
+    <string name="view_home_title">WoSao</string>
+    <string name="view_tab_books">Book</string>
+    <string name="view_tab_staff">Staff</string>
+    <string name="view_tab_search">Search</string>
+    <string name="view_tab_lending">Lending</string>
+    <string name="view_tab_return">Return</string>
+
 </resources>

@@ -55,6 +55,27 @@
             android:src="@drawable/icon_share" />
 
     </RelativeLayout>
+    
+    <!--
+    <com.facebook.login.widget.LoginButton
+        xmlns:facebook="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/login_facebook_button"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
+        facebook:com_facebook_login_text=""
+        facebook:com_facebook_logout_text=""
+        android:layout_centerInParent="true"
+        /> -->
+
+    <!--<com.facebook.login.widget.LoginButton-->
+        <!--android:id="@+id/login_button"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="center_horizontal"-->
+        <!--android:layout_marginTop="30dp"-->
+        <!--android:layout_centerInParent="true"-->
+        <!--android:layout_marginBottom="30dp" />-->
+
 
     <LinearLayout
         android:id="@+id/rl_home_bottom_container"
@@ -102,5 +123,19 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/ll_social_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_above="@+id/rl_home_bottom_container"
+        android:layout_marginBottom="30dp">
 
+        <com.facebook.login.widget.LoginButton
+            android:id="@+id/login_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal" />
+
+    </LinearLayout>
 </RelativeLayout>
