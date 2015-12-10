@@ -18,8 +18,15 @@ android {
         }
     }
 }
+//step_2 添加maven仓库
+repositories{
+    mavenCentral()
+}//end
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:22.2.1'
+
+    //step_3 facebook sdk version
+    compile 'com.facebook.android:facebook-android-sdk:4.8.0'
 }
