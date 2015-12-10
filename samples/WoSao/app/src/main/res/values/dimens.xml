@@ -1,0 +1,9 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <!-- homeActivity title 控件边距-->
+    <dimen name="activity_ll_padding">16dp</dimen>
+    <dimen name="icon_container_xy">40dp</dimen>
+</resources>

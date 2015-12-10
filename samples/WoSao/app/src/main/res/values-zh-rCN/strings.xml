@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">我扫扫</string>
+
+    <string name="hello_world">哈罗!</string>
+    <string name="action_settings">Settings</string>
+
+    <!--HomeActivity 中的控件名称-->
+    <string name="view_home_title">我扫扫</string>
+    <string name="view_tab_books">书库</string>
+    <string name="view_tab_staff">员工</string>
+    <string name="view_tab_search">搜索</string>
+    <string name="view_tab_lending">借阅</string>
+    <string name="view_tab_return">归还</string>
+
+
+
+</resources>
