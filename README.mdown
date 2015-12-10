@@ -1,53 +1,38 @@
-Facebook SDK for Android
-========================
+Facebook-SDK-Dev for Android
+============================
 
-[![Build Status](https://travis-ci.org/facebook/facebook-android-sdk.svg?branch=master)](https://travis-ci.org/facebook/facebook-android-sdk.svg?branch=master)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.facebook.android/facebook-android-sdk/badge.svg?style=flat)](https://maven-badges.herokuapp.com/maven-central/com.facebook.android/facebook-android-sdk)
+作者: shrimpcolo, Email: shrimpcolo@gmail.com
 
-This open-source library allows you to integrate Facebook into your Android app.
+本项目fork自Facebook官方git库, 目的如下：
+* 成功编译出sample中的apk。
+* 学习Sdk中Sample。
+* 熟悉Facebook Sdk提供的基本常用功能（login, share）。
 
-Learn more about about the provided samples, documentation, integrating the SDK into your app, accessing source code, and more at https://developers.facebook.com/docs/android
+说明
+----
+* master分支是原始分支，不做任何修改，仅仅是为同步Facebook官方git库。
+* MyDev分支是个人学习分支，涉及的修改跟FB Sdk使用有关。
+* 近期增加的内容是个sample（名字Wosao，在sample文件夹中），分步骤讲解如何集成Sdk到自己的App中。
 
-TRY IT OUT
-----------
-1. Check-out the tutorials available online at https://developers.facebook.com/docs/android/getting-started
-2. Start coding! Visit https://developers.facebook.com/docs/android/ for tutorials and reference documentation.
+开发集成环境git 
+------------
+* Android Studio 1.4
+* gradle 2.6
+* Facebook Sdk version 4.8
 
-FEATURES
---------
-* Login - https://developers.facebook.com/docs/facebook-login
-* Sharing - https://developers.facebook.com/docs/sharing
-* App Links - https://developers.facebook.com/docs/applinks
-* Graph API - https://developers.facebook.com/docs/android/graph
-* Analytics for Apps - https://developers.facebook.com/docs/analytics
+sample编译生成apk
+-----------------
+生成当前版本Sdk提供的7个实例apk 以及 个人的Demo apk，所在目录 ``` ./sample-apk/ ```。
+让有需要的同学直接查看apk，然后再结合Wosao实例步骤集成。
+其中Wosao源码作用如下：
+* 集成FB Sdk
+* 实现FB 2种登录方式
+* 分享本地图片
+* 多途径分享图片
 
-GIVE FEEDBACK
--------------
-Please report bugs or issues to https://developers.facebook.com/bugs/
+在运行sample过程中需要生成本地debugkey.store 对应的Key Hash, 放到facebook开发者网站个人开发配置中。
+详见 ![如何生成sample app key](http://blog.csdn.net/shrimpcolo/article/details/49150829#忘却的步骤)
 
-You can also join the Facebook Developers Group on Facebook (https://www.facebook.com/groups/fbdevelopers/) or ask questions on Stack Overflow (http://facebook.stackoverflow.com)
+Wosao 集成步骤
+--------------
 
-CONTRIBUTING
--------------
-We are able to accept contributions to the Facebook SDK for Android. To contribute please do the following.
-- Follow the instructions in the [CONTRIBUTING.mdown](https://github.com/facebook/facebook-android-sdk/blob/master/CONTRIBUTING.mdown).
-- Submit your pull request to the [dev](https://github.com/facebook/facebook-android-sdk/tree/dev) branch. This allows us to merge your change into our internal master and then push out the change in the next release.
-
-LICENSE
--------
-Except as otherwise noted, the Facebook SDK for Android is licensed under the Facebook Platform License (https://github.com/facebook/facebook-android-sdk/blob/master/LICENSE.txt).
-
-Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the License for the specific language governing permissions and limitations under the License.
-
-DEVELOPER TERMS
----------------
-
-- By enabling Facebook integrations, including through this SDK, you can share information with Facebook, including information about people’s use of your app. Facebook will use information received in accordance with our Data Use Policy (https://www.facebook.com/about/privacy/), including to provide you with insights about the effectiveness of your ads and the use of your app.  These integrations also enable us and our partners to serve ads on and off Facebook.
-
-- You may limit your sharing of information with us by updating the Insights control in the developer tool (https://developers.facebook.com/apps/[app_id]/settings/advanced).
-
-- If you use a Facebook integration, including to share information with us, you agree and confirm that you have provided appropriate and sufficiently prominent notice to and obtained the appropriate consent from your users regarding such collection, use, and disclosure (including, at a minimum, through your privacy policy). You further agree that you will not share information with us about children under the age of 13.
-
-- You agree to comply with all applicable laws and regulations and also agree to our Terms (https://www.facebook.com/policies/), including our Platform Policies (https://developers.facebook.com/policy/) and Advertising Guidelines, as applicable (https://www.facebook.com/ad_guidelines.php).
-
-By using the Facebook SDK for Android you agree to these terms.
