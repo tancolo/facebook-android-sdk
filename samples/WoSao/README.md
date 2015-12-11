@@ -123,3 +123,92 @@ va:736)
 如果你需要分享 链接， 图片， 视频， 那么你同样需要声明FacebookContentProvider 到manifest中。
 这个在 **分享本地图片** 那里说明。
 
+### 实现FB 2 种登录方式
+Facebook SDK 提供2中方法供你登录Facebook：
+- LoginButton  class - 提供登录button， 你可以添加到自己的UI中，使用当前access token 并且可以登录，登出！
+- LoginManager class - 不使用UI 元素来初始化登录！
+
+#### LoginButton实现登录
+- 首先在act_layout中添加自带的button 元素。
+    ```
+    <LinearLayout
+            android:id="@+id/ll_social_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_above="@+id/rl_home_bottom_container"
+            android:layout_marginBottom="30dp">
+
+            <com.facebook.login.widget.LoginButton
+                android:id="@+id/login_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal" />
+    ```
+    其中com.facebook.login.widget.LoginButton就是facebook提供的UI控件， 可以添加自己的android属性。
+
+- 其次需要在HomeActivityTest.java中实现登录步骤
+
+    1.**在Applicaion中初始化facebook sdk， 官方推荐的方法。**
+    ```
+    public void onCreate() {
+            super.onCreate();
+            FacebookSdk.sdkInitialize(getApplicationContext());
+        }
+    ```
+    不要忘记在AndroidManifest.xml中 application标签下添加 ``` android:name=".MyApplication" ```
+
+    2.**定义LoginButton & CallbackManager对象**
+    ```
+        private LoginButton loginButton;
+        private CallbackManager callbackManager;
+    ```
+    3.**在onCreate中实例化对象**
+    ```
+     protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            ...
+            //获得callbackmanager
+            callbackManager = CallbackManager.Factory.create();
+            setContentView(R.layout.act_home);
+            ... ...
+            //获得loginButton
+            loginButton = (LoginButton) findViewById(R.id.login_button);
+            if (loginButton == null) {
+                  return;
+            }
+        ... ...
+     }
+    ```
+    4.**设置读取权限以及注册回调**
+    ```
+    loginButton.setReadPermissions(Arrays.asList("public_profile", "user_friends", "email", "user_birthday"));
+    loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+          @Override
+          public void onSuccess(LoginResult loginResult) {
+               Log.e(TAG, "onSuccess --------");
+          }
+
+          @Override
+          public void onCancel() {
+              Log.e(TAG, "onCancel");
+          }
+
+          @Override
+          public void onError(FacebookException exception) {
+              Log.e(TAG, "onError: " + exception.getMessage() + "\n " + exception.toString());
+          }
+    });
+    ```
+    5.**重写onActivityResult**
+    ```
+    @Override
+        protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+            super.onActivityResult(requestCode, resultCode, data);
+
+            Log.e(TAG, "request: " + requestCode + ",  resultCode: " + resultCode
+                    + ", data: " + data.toString());
+            callbackManager.onActivityResult(requestCode, resultCode, data);
+        }
+    ```
+
