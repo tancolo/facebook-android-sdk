@@ -147,4 +147,67 @@
             />
 
     </LinearLayout>
+
+    <!-- 分享图片-->
+    <LinearLayout
+        android:id="@+id/ll_share_container"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:orientation="horizontal"
+        android:layout_above="@+id/ll_social_container"
+        android:layout_marginBottom="30dp">
+
+        <LinearLayout
+            android:id="@+id/ll_share1_container"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/im_icon_share_default"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scaleType="fitXY"
+                android:layout_weight="5"
+                android:src="@drawable/icon_share"
+                />
+            <Button
+                android:id="@+id/bt_share1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/button_share_txt"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                />
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/ll_share2_container"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/im_icon_share_select"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scaleType="fitXY"
+                android:layout_weight="5"
+                android:text="@string/iv_select_file"
+                />
+            <Button
+                android:id="@+id/bt_share2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/button_share_txt"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
 </RelativeLayout>

@@ -1,6 +1,8 @@
 package com.shrimpcolo.wosao;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -14,6 +16,9 @@ import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.facebook.share.ShareApi;
+import com.facebook.share.model.SharePhoto;
+import com.facebook.share.model.SharePhotoContent;
 
 import org.json.JSONObject;
 
@@ -32,6 +37,11 @@ public class HomeActivityTest extends ActionBarActivity implements View.OnClickL
 
     //本地 Button Login
     private Button localLoginButton;
+
+    //分享图片
+    private Button shareDefaultImage;
+//    private Button shareSeletedImage;
+//    private ImageView selectedImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +96,18 @@ public class HomeActivityTest extends ActionBarActivity implements View.OnClickL
         localLoginButton = (Button)findViewById(R.id.login_button_local);
         localLoginButton.setOnClickListener(this);
 
+        //分享图片
+        //1）分享默认图片
+        shareDefaultImage = (Button)findViewById(R.id.bt_share1);
+        shareDefaultImage.setOnClickListener(this);
+
+//        //2）分享选择图片
+//        shareSeletedImage = (Button)findViewById(R.id.bt_share2);
+//        shareSeletedImage.setOnClickListener(this);
+//
+//        //选择图片
+//        selectedImage = (ImageView)findViewById(R.id.im_icon_share_select);
+//        selectedImage.setOnClickListener(this);
     }
 
     //示例 获取自己相关信息
@@ -135,6 +157,15 @@ public class HomeActivityTest extends ActionBarActivity implements View.OnClickL
                 Log.e(TAG, "onClick...local button");
                 localLogin();
                 break;
+            case R.id.bt_share1:
+                //为了说明分别说明分享步骤，这里再次重复写登录步骤
+                Log.e(TAG, "onClick...share default image");
+                login4ShareImage();
+                break;
+//            case R.id.bt_share2:
+//                Log.e(TAG, "onClick...share default image");
+//                login4ShareSelectedImage();
+//                break;
         }
     }
 
@@ -169,6 +200,55 @@ public class HomeActivityTest extends ActionBarActivity implements View.OnClickL
                                 "Login in Error: " + exception.getMessage() + "\n " + exception.toString(), Toast.LENGTH_LONG).show();
                     }
                 });
+    }
+
+    //图片分享
+    private void login4ShareImage() {
+        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile",
+                "user_friends", "email", "user_birthday"));
+
+        LoginManager.getInstance().registerCallback(callbackManager,
+                new FacebookCallback<LoginResult>() {
+                    @Override
+                    public void onSuccess(LoginResult loginResult) {
+                        // App code
+                        Log.e(TAG, "ShareImage - onSuccess --------" + loginResult.getAccessToken());
+                        //Toast.makeText(getApplicationContext(), "Login in Success!!!", Toast.LENGTH_LONG).show();
+                        //do share image
+                        publishImage();
+                    }
+
+                    @Override
+                    public void onCancel() {
+                        // App code
+                        Log.e(TAG, "ShareImage - onCancel");
+                        Toast.makeText(getApplicationContext(), "Login in Cancel!!!", Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onError(FacebookException exception) {
+                        // App code
+                        Log.e(TAG, "ShareImage - onError: " + exception.getMessage()
+                                + "\n " + exception.toString());
+
+                        Toast.makeText(getApplicationContext(),
+                                "Login in Error: " + exception.getMessage() + "\n " + exception.toString(), Toast.LENGTH_LONG).show();
+                    }
+                });
+    }
+
+    private void publishImage() {
+        //Bitmap image = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
+        Bitmap image = BitmapFactory.decodeResource(getResources(), R.drawable.icon_share );
+        SharePhoto photo = new SharePhoto.Builder()
+                .setBitmap(image)
+                .setCaption("Just for testing！！")
+                .build();
+        SharePhotoContent content = new SharePhotoContent.Builder()
+                .addPhoto(photo)
+                .build();
+
+        ShareApi.share(content, null);
     }
 
     @Override

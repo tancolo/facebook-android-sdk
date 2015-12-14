@@ -14,5 +14,7 @@
     <string name="view_tab_return">Return</string>
 
     <string name="local_login_button">Local Button</string>
+    <string name="button_share_txt">Share to Facebook</string>
+    <string name="iv_select_file">Select Picture</string>
 
 </resources>

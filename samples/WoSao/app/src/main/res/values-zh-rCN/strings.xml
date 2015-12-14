@@ -14,5 +14,7 @@
 
     <string name="facebook_app_id">1640967989507233</string>
     <string name="local_login_button">本地 Button</string>
+    <string name="button_share_txt">分享到脸书</string>
+    <string name="iv_select_file">选择图片</string>
 
 </resources>

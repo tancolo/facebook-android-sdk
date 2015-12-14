@@ -276,3 +276,111 @@ Facebook SDK 提供2中方法供你登录Facebook：
     ```
     记得onActivityResult重写是必须的！
 
+### 分享本地图片
+这里设置2个目标：1. 分享默认图片； 2. 选择图片分享。
+
+#### 分享默认图片
+- 首先，在act_home中添加xml 元素
+    ```
+        <!-- 分享图片-->
+        <LinearLayout
+            android:id="@+id/ll_share_container"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:orientation="horizontal"
+            android:layout_above="@+id/ll_social_container"
+            android:layout_marginBottom="30dp">
+
+            <LinearLayout
+                android:id="@+id/ll_share1_container"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/im_icon_share_default"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scaleType="fitXY"
+                    android:layout_weight="5"
+                    android:src="@drawable/icon_share"
+                    />
+                <Button
+                    android:id="@+id/bt_share1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/button_share_txt"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="1"
+                    />
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/ll_share2_container"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/im_icon_share_select"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scaleType="fitXY"
+                    android:layout_weight="5"
+                    android:text="@string/iv_select_file"
+                    />
+                <Button
+                    android:id="@+id/bt_share2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/button_share_txt"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="1"
+                    />
+
+            </LinearLayout>
+
+        </LinearLayout>
+    ```
+    注意，这里添加了多个布局文件，为了后续选择图片分享的实现。
+
+- 其次， 在代码中实现
+    ```
+        //分享图片
+        private Button shareDefaultImage;
+    ```
+
+    ```
+            //1）分享默认图片
+            shareDefaultImage = (Button)findViewById(R.id.bt_share1);
+            shareDefaultImage.setOnClickListener(this);
+    ```
+
+    ```
+                case R.id.bt_share1:
+                    //为了说明分别说明分享步骤，这里再次重复写登录步骤
+                    Log.e(TAG, "onClick...share default image");
+                    login4ShareImage();
+                    break;
+    ```
+
+- 最后, 在login4ShareImage中重复写了登录facebook的步骤， 分享的关键代码段如下:
+    ```
+        private void publishImage() {
+            //Bitmap image = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
+            Bitmap image = BitmapFactory.decodeResource(getResources(), R.drawable.icon_share );
+            SharePhoto photo = new SharePhoto.Builder()
+                    .setBitmap(image)
+                    .setCaption("Just for testing！！")
+                    .build();
+            SharePhotoContent content = new SharePhotoContent.Builder()
+                    .addPhoto(photo)
+                    .build();
+
+            ShareApi.share(content, null);
+        }
+    ```
+
+
