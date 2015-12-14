@@ -389,7 +389,7 @@ Facebook SDK 提供2中方法供你登录Facebook：
 - 生成特定宽高bitmap
 
 ##### 选择图片
-    - 打开文件管理器
+- 打开文件管理器
     ```
         private void openFileManager() {
             Intent it = new Intent(Intent.ACTION_PICK,
@@ -407,15 +407,16 @@ Facebook SDK 提供2中方法供你登录Facebook：
             }
         }
     ```
-    - 回调处理
-    需要在onActivityResult中处理
+- 回调处理
+需要在onActivityResult中处理
+
     ```
     else if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {//获得选中的图片Uri
                 Log.e(TAG, "onActivityResult(): data = " + data);
                 getImageInfo(data);
             }
     ```
-    - 获取必要信息
+- 获取必要信息
     ```
         private void getImageInfo(Intent data) {
             if (data == null) {
@@ -472,7 +473,7 @@ Facebook SDK 提供2中方法供你登录Facebook：
             }
 
         }
-    ``
+    ```
 
 
 ##### 生成特定宽高bitmap
