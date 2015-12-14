@@ -13,4 +13,6 @@
     <string name="view_tab_lending">Lending</string>
     <string name="view_tab_return">Return</string>
 
+    <string name="local_login_button">Local Button</string>
+
 </resources>

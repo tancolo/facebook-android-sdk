@@ -129,13 +129,22 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_above="@+id/rl_home_bottom_container"
+        android:gravity="center_horizontal"
         android:layout_marginBottom="30dp">
 
         <com.facebook.login.widget.LoginButton
             android:id="@+id/login_button"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal" />
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal"
+            />
+        <Button
+            android:id="@+id/login_button_local"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="@string/local_login_button"
+            android:layout_gravity="center_horizontal"
+            />
 
     </LinearLayout>
 </RelativeLayout>

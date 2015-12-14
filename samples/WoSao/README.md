@@ -212,3 +212,67 @@ Facebook SDK 提供2中方法供你登录Facebook：
         }
     ```
 
+#### LoginManager实现登录
+为实现本地Button登录facebook, 这里仅仅添加了几个步骤。
+- 首先在act_layout中添加本地Button 元素。
+    ```
+                <Button
+                android:id="@+id/login_button_local"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="@string/local_login_button"
+                android:layout_gravity="center_horizontal"
+                />
+    ```
+
+- 其次,在HomeActivityTest.java中添加
+    ```
+    //本地 Button Login
+    private Button localLoginButton;
+    ```
+
+    在onCreate()
+    ```
+            //第二种方式(LoginManager)登录facebook
+            localLoginButton = (Button)findViewById(R.id.login_button_local);
+            localLoginButton.setOnClickListener(this);
+    ```
+
+- 最后，在onClick()中调用函数localLogin 实现登录以及回调处理
+    ```
+        private void localLogin() {
+            LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile",
+                    "user_friends", "email", "user_birthday"));
+            //LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile", "user_friends"));
+
+            LoginManager.getInstance().registerCallback(callbackManager,
+                    new FacebookCallback<LoginResult>() {
+                        @Override
+                        public void onSuccess(LoginResult loginResult) {
+                            // App code
+                            Log.e(TAG, "LocalLogin - onSuccess --------" + loginResult.getAccessToken());
+                            Toast.makeText(getApplicationContext(), "Login in Success!!!", Toast.LENGTH_LONG).show();
+                        }
+
+                        @Override
+                        public void onCancel() {
+                            // App code
+                            Log.e(TAG, "LocalLogin - onCancel");
+                            Toast.makeText(getApplicationContext(), "Login in Cancel!!!", Toast.LENGTH_LONG).show();
+                        }
+
+                        @Override
+                        public void onError(FacebookException exception) {
+                            // App code
+                            Log.e(TAG, "LocalLogin - onError: " + exception.getMessage()
+                                    + "\n " + exception.toString());
+
+                            Toast.makeText(getApplicationContext(),
+                                    "Login in Error: " + exception.getMessage() + "\n " + exception.toString(), Toast.LENGTH_LONG).show();
+                        }
+                    });
+        }
+
+    ```
+    记得onActivityResult重写是必须的！
+
