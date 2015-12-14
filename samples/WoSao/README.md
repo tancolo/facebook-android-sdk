@@ -383,4 +383,101 @@ Facebook SDK 提供2中方法供你登录Facebook：
         }
     ```
 
+#### 选择图片分享
+这个主题需要添加的内容比较多：
+- 选择图片
+- 生成特定宽高bitmap
 
+##### 选择图片
+    - 打开文件管理器
+    ```
+        private void openFileManager() {
+            Intent it = new Intent(Intent.ACTION_PICK,
+                    android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            it.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+
+            try {
+                startActivityForResult(it, REQUEST_CODE);
+            } catch (ActivityNotFoundException exp) {
+                Toast.makeText(this, getResources().getString(R.string.view_no_filemanager),
+                        Toast.LENGTH_SHORT);
+            } catch (Exception exp) {
+                Toast.makeText(this, getResources().getString(R.string.view_filemanager_error),
+                        Toast.LENGTH_SHORT);
+            }
+        }
+    ```
+    - 回调处理
+    需要在onActivityResult中处理
+    ```
+    else if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {//获得选中的图片Uri
+                Log.e(TAG, "onActivityResult(): data = " + data);
+                getImageInfo(data);
+            }
+    ```
+    - 获取必要信息
+    ```
+        private void getImageInfo(Intent data) {
+            if (data == null) {
+                Log.e(TAG, "data is null!");
+                return;
+            }
+            Uri selectedUri = data.getData();
+            Cursor cursor = null;
+            String mimeType;
+
+            try {
+                cursor = getContentResolver().query(selectedUri, null, null, null, null);
+                Log.e(TAG, "\n selectedUri = " + selectedUri + "\n cursor = " + cursor
+                        + "\n started string = "
+                        + selectedUri.toString().substring(0, 7));
+
+                if (selectedUri != null
+                        && selectedUri.toString().substring(0, 10)
+                        .equals("content://") && cursor != null
+                        && cursor.moveToFirst()) {
+
+                    mimeType = cursor
+                            .getString(cursor
+                                    .getColumnIndexOrThrow(MediaStore.Images.Media.MIME_TYPE));
+                    Log.e(TAG, "mimeType  = " + mimeType);
+
+                    imagePath = cursor.getString(cursor
+                            .getColumnIndexOrThrow(MediaStore.Images.Media.DATA));
+                    Log.e(TAG, "imagePath = " + imagePath);
+                }
+
+                // ImageView显示图片
+                //1. 为了UI效果的美观, 2等分布局, 需要获得imageview 大小, 然后将选择的图片缩放为imageview大小
+                //注意：在onCreate中使用getHeight & getWidth获得控件的宽高是不行的，这是因为他们自己还没有被度量好。
+                Bitmap bitmap = null;
+                mHeight = selectedImage.getHeight();
+                mWidth = selectedImage.getWidth();
+                Log.e(TAG, "width = " + mWidth + ", mHeight = " + mHeight);
+
+                //2. 将图片压缩成ImageView大小的bitmap
+                if (imagePath != null && !imagePath.isEmpty()) {
+                    bitmap = Utils.decodeFile(imagePath, mWidth, mHeight);
+                    selectedImage.setImageBitmap(bitmap);
+                    bitmap.recycle();
+                }
+
+            }catch (Exception exp) {
+                exp.printStackTrace();
+                return;
+            } finally {
+                if (cursor != null && !cursor.isClosed()) {
+                    cursor.close();
+                }
+            }
+
+        }
+    ``
+
+
+##### 生成特定宽高bitmap
+这里用到了Utils中的2个函数，通过文件路径获得bitmap。
+- **1. decodeFile(String path)**
+- **2. decodeFile(String path, int reqWidth, int reqHeight)**
+详细的 参看源码!
+在Wosao中 图片展示使用 [2] 个， 发送给facebook使用 [1] 函数。

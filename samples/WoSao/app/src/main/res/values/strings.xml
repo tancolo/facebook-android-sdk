@@ -17,4 +17,8 @@
     <string name="button_share_txt">Share to Facebook</string>
     <string name="iv_select_file">Select Picture</string>
 
+    <string name="view_no_filemanager">No File Manger</string>
+    <string name="view_filemanager_error">Import File Error</string>
+    <!--<string name="view_not_video"></string>-->
+
 </resources>

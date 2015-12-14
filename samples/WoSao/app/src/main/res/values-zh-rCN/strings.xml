@@ -17,4 +17,8 @@
     <string name="button_share_txt">分享到脸书</string>
     <string name="iv_select_file">选择图片</string>
 
+    <string name="view_no_filemanager">没有文件管理器</string>
+    <string name="view_filemanager_error">导入文件出错</string>
+    <!--<string name="view_not_video">不是视频文件</string>-->
+
 </resources>

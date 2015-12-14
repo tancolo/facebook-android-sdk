@@ -1,8 +1,12 @@
 package com.shrimpcolo.wosao;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -27,7 +31,7 @@ import java.util.Arrays;
 public class HomeActivityTest extends ActionBarActivity implements View.OnClickListener {
     private static final String TAG = "shrimpcolo";
 
-    private ImageView imageView;
+    //private ImageView imageView;
 
     //使用facebook自带的button登录
     private LoginButton loginButton;
@@ -40,8 +44,16 @@ public class HomeActivityTest extends ActionBarActivity implements View.OnClickL
 
     //分享图片
     private Button shareDefaultImage;
-//    private Button shareSeletedImage;
-//    private ImageView selectedImage;
+    private Button shareSeletedImage;
+    private ImageView selectedImage;
+    private final static int REQUEST_CODE = 1000;
+    private final static int REQUEST_CODE4_FACEBOOK = 64206;
+    private String imagePath = null;
+    //private Bitmap mBitmap = null;
+
+    //ImageView 宽高值
+    private int mHeight = 0;
+    private int mWidth = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,13 +113,13 @@ public class HomeActivityTest extends ActionBarActivity implements View.OnClickL
         shareDefaultImage = (Button)findViewById(R.id.bt_share1);
         shareDefaultImage.setOnClickListener(this);
 
-//        //2）分享选择图片
-//        shareSeletedImage = (Button)findViewById(R.id.bt_share2);
-//        shareSeletedImage.setOnClickListener(this);
-//
-//        //选择图片
-//        selectedImage = (ImageView)findViewById(R.id.im_icon_share_select);
-//        selectedImage.setOnClickListener(this);
+        //2）分享选择图片
+        shareSeletedImage = (Button)findViewById(R.id.bt_share2);
+        shareSeletedImage.setOnClickListener(this);
+
+        //选择图片
+        selectedImage = (ImageView)findViewById(R.id.im_icon_share_select);
+        selectedImage.setOnClickListener(this);
     }
 
     //示例 获取自己相关信息
@@ -162,10 +174,14 @@ public class HomeActivityTest extends ActionBarActivity implements View.OnClickL
                 Log.e(TAG, "onClick...share default image");
                 login4ShareImage();
                 break;
-//            case R.id.bt_share2:
-//                Log.e(TAG, "onClick...share default image");
-//                login4ShareSelectedImage();
-//                break;
+            case R.id.bt_share2:
+                Log.e(TAG, "\n onClick...share selected image to facebook");
+                login4ShareSelectedImage();
+                break;
+            case R.id.im_icon_share_select:
+                Log.e(TAG, "\n onClick...selected image");
+                openFileManager();
+                break;
         }
     }
 
@@ -213,9 +229,9 @@ public class HomeActivityTest extends ActionBarActivity implements View.OnClickL
                     public void onSuccess(LoginResult loginResult) {
                         // App code
                         Log.e(TAG, "ShareImage - onSuccess --------" + loginResult.getAccessToken());
-                        //Toast.makeText(getApplicationContext(), "Login in Success!!!", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Login in Success!!!", Toast.LENGTH_LONG).show();
                         //do share image
-                        publishImage();
+                        publishImage(imagePath);
                     }
 
                     @Override
@@ -237,9 +253,19 @@ public class HomeActivityTest extends ActionBarActivity implements View.OnClickL
                 });
     }
 
-    private void publishImage() {
-        //Bitmap image = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
-        Bitmap image = BitmapFactory.decodeResource(getResources(), R.drawable.icon_share );
+    private void publishImage(String imagePath) {
+        //1. Bitmap
+        Bitmap image = null;
+        Log.e(TAG, "imagePath = " + imagePath);
+
+        if (imagePath == null || imagePath.isEmpty()) {//默认图片分享
+            //Bitmap image = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
+            image = BitmapFactory.decodeResource(getResources(), R.drawable.icon_share );
+        }else {// 分享选择图片
+            image = Utils.decodeFile(imagePath);
+            this.imagePath = null;
+        }
+
         SharePhoto photo = new SharePhoto.Builder()
                 .setBitmap(image)
                 .setCaption("Just for testing！！")
@@ -249,6 +275,90 @@ public class HomeActivityTest extends ActionBarActivity implements View.OnClickL
                 .build();
 
         ShareApi.share(content, null);
+
+        Toast.makeText(getApplicationContext(), "Shared it Success!!!", Toast.LENGTH_LONG).show();
+        //image.recycle();
+    }
+
+    //选择图片分享
+    private void login4ShareSelectedImage() {
+        //1. 判断是否有选图片
+        if (imagePath == null) {
+            Toast.makeText(getApplicationContext(), "Not select image", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        //2. 登录并分享到facebook, 这里直接调用login4ShareImage， 并对publishImage函数进行修改
+        login4ShareImage();
+    }
+
+    private void openFileManager() {
+        Intent it = new Intent(Intent.ACTION_PICK,
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        it.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+
+        try {
+            startActivityForResult(it, REQUEST_CODE);
+        } catch (ActivityNotFoundException exp) {
+            Toast.makeText(this, getResources().getString(R.string.view_no_filemanager),
+                    Toast.LENGTH_SHORT);
+        } catch (Exception exp) {
+            Toast.makeText(this, getResources().getString(R.string.view_filemanager_error),
+                    Toast.LENGTH_SHORT);
+        }
+    }
+    private void getImageInfo(Intent data) {
+        if (data == null) {
+            Log.e(TAG, "data is null!");
+            return;
+        }
+        Uri selectedUri = data.getData();
+        Cursor cursor = null;
+        String mimeType;
+
+        try {
+            cursor = getContentResolver().query(selectedUri, null, null, null, null);
+            Log.e(TAG, "\n selectedUri = " + selectedUri + "\n cursor = " + cursor
+                    + "\n started string = "
+                    + selectedUri.toString().substring(0, 7));
+
+            if (selectedUri != null
+                    && selectedUri.toString().substring(0, 10)
+                    .equals("content://") && cursor != null
+                    && cursor.moveToFirst()) {
+
+                mimeType = cursor
+                        .getString(cursor
+                                .getColumnIndexOrThrow(MediaStore.Images.Media.MIME_TYPE));
+                Log.e(TAG, "mimeType  = " + mimeType);
+
+                imagePath = cursor.getString(cursor
+                        .getColumnIndexOrThrow(MediaStore.Images.Media.DATA));
+                Log.e(TAG, "imagePath = " + imagePath);
+            }
+
+            // ImageView显示图片
+            //1. 为了UI效果的美观, 2等分布局, 需要获得imageview 大小, 然后将选择的图片缩放为imageview大小
+            //注意：在onCreate中使用getHeight & getWidth获得控件的宽高是不行的，这是因为他们自己还没有被度量好。
+            Bitmap bitmap = null;
+            mHeight = selectedImage.getHeight();
+            mWidth = selectedImage.getWidth();
+            Log.e(TAG, "width = " + mWidth + ", mHeight = " + mHeight);
+
+            //2. 将图片压缩成ImageView大小的bitmap
+            if (imagePath != null && !imagePath.isEmpty()) {
+                bitmap = Utils.decodeFile(imagePath, mWidth, mHeight);
+                selectedImage.setImageBitmap(bitmap);
+            }
+
+        }catch (Exception exp) {
+            exp.printStackTrace();
+            return;
+        } finally {
+            if (cursor != null && !cursor.isClosed()) {
+                cursor.close();
+            }
+        }
+
     }
 
     @Override
@@ -274,7 +384,14 @@ public class HomeActivityTest extends ActionBarActivity implements View.OnClickL
         super.onActivityResult(requestCode, resultCode, data);
 
         Log.e(TAG, "request: " + requestCode + ",  resultCode: " + resultCode
-                + ", data: " + data.toString());
-        callbackManager.onActivityResult(requestCode, resultCode, data);
+                + ", data: " + ((data != null) ? data.toString() : "null")  );
+
+        //facebook request code
+        if (requestCode == REQUEST_CODE4_FACEBOOK && resultCode == RESULT_OK ) {
+            callbackManager.onActivityResult(requestCode, resultCode, data);
+        }else if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {//获得选中的图片Uri
+            Log.e(TAG, "onActivityResult(): data = " + data);
+            getImageInfo(data);
+        }
     }
 }
